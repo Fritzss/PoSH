@@ -30,7 +30,7 @@ if ($check_backup -gt $date){
                                     # for test -whatif
                                     # if correct work - remove -whatif
                                     $_ >> $path_local_back\"logs.txt";
-                                    Remove-Item -Exclude "*.iso","*.txt" $path_back\$_ ;
+                                    Remove-Item -Exclude "*.iso","*.txt" $path_back\$_ -WhatIf ;
                                                                }
                         }
         
