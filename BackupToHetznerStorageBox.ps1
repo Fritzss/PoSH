@@ -33,6 +33,4 @@ if ($check_backup -gt $date){
                                     Remove-Item -Exclude "*.iso","*.txt" $path_back\$_ -WhatIf ;
                                                                }
                         }
-        
-}
-}
+             }
