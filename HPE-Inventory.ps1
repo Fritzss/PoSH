@@ -5,7 +5,7 @@ $user = "user"
 $pass = Get-Content "<your_path>pass.txt"| ConvertTo-SecureString
 $credentials = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $user, $pass
 $serversIlo = @()
-$serversIlo = Find-HPEiLO <your_iLo_NET> | ? {$_.PN -like "*iLo 5*"}
+$serversIlo = Find-HPEiLO <your_iLo_NET> #| ? {$_.PN -like "*iLo 5*"} # for iLo 5
 $serversIlo | % {$_.IP}
 $report = @()
 
@@ -48,4 +48,4 @@ $inven = gethpeinventory -serversIlo $serversIlo -credentials $credentials
 $inven | Out-GridView
 $inven = $inven | Sort-Object | Get-Unique -AsString
 
-$inven | Export-Csv -UseCulture -Encoding UTF8 -Path <your_path>\inventory5.csv
+$inven | Export-Csv -UseCulture -Encoding UTF8 -Path <your_path>.csv
