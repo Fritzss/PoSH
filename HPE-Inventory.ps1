@@ -13,12 +13,11 @@ function gethpeinventory($serversIlo, $credentials){$serversIlo | % { $conilo = 
                                                                       sleep 1;
                                                                       $server = Get-HPEiLOServerInfo -Connection $conilo ;
                                                                       $hdd = Get-HPEiLOSmartArrayStorageController -Connection $conilo ;
-																	  $pci = Get-HPEiLOPCIDeviceInventory -Connection $conilo
+								      $pci = Get-HPEiLOPCIDeviceInventory -Connection $conilo
                                                                       Disconnect-HPEiLO -Connection $conilo ;
                                                                       $serial = $_.SerialNumber ; $model = $_.SPN ; $server ; $hdd; $pci
                                                                       $countMemory = 0;
                                                                       $server.MemoryInfo.MemoryDetails.MemoryData.DIMMStatus | % {if ($_ -like "*Good*") {$countMemory = $countMemory +1 }};
-                                                                      
                                                                      } | % { $row = '' | select IP, SerialNumber, Model, HostName, CPU, CPU_Model, MemoryPlank, MemorySlot, MemoryPartNum, MemoryTotalSizeGB, MemorySizeGB, MemoryType, HDD, HDDSize, HDDType, HDDModel, HDDSN, NICinfo, PCI
                                                                              $row.IP = $_.IP
                                                                              $row.SerialNumber = $serial
@@ -38,7 +37,7 @@ function gethpeinventory($serversIlo, $credentials){$serversIlo | % { $conilo = 
                                                                              $row.HDDModel = ((($hdd.Controllers[0].PhysicalDrives.Model) | select -Unique)-join ",")
                                                                              $row.HDDSN = (($hdd.Controllers[0].PhysicalDrives.SerialNumber) -join ",")
                                                                              $row.NICinfo = (($server.NICInfo.NetworkAdapter.Name) -join ",")
-																			                                       $row.PCI = (($pci.PCIDevice.Name) -join ",")
+									     $row.PCI = (($pci.PCIDevice.Name) -join ",")
                                                                              $reportyop += $row
                                                                             }
                                                              return $report
