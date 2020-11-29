@@ -1,6 +1,6 @@
 if (!(Test-Path Z:\)) { net use z: \\<user>.your-storagebox.de\backup<or sub account > /user:<user> <pass> /PERSISTENT:YES}
 #from which folder in folder c:\backup to take files
-$pathALL="lt","lt-test"
+$pathALL="<folder1>","<folder2>","<folder...n>"
 $pathALL | % {if (!(Test-Path z:\$_)) {New-Item -Path z:\$_ -ItemType Directory}}
 foreach ($_pathALL in $pathALL) {
 #password
