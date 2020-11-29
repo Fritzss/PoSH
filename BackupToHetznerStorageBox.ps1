@@ -24,9 +24,8 @@ $date = (Get-Date).AddDays(—$dayClear )
 $check_backup=(Get-childItem $path_back -Recurse).LastWriteTime
 if ($check_backup -gt $date){
 # remove fail old $dayClear ? 
-            Get-ChildItem -Path $path_back -Recurse| where {!$_.PSIsContainer} |
-                foreach {
-                            if ($_.LastWriteTime -lt $date) {
+            Get-ChildItem -Path $path_back -Recurse| where {!$_.PSIsContainer} | % {
+                                if ($_.LastWriteTime -lt $date) {
                                     # for test -whatif
                                     # if correct work - remove -whatif
                                     $_ >> $path_local_back\"logs.txt";
