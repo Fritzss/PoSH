@@ -36,7 +36,7 @@ return $choose
 }
 do {
 $exit = $false
-$ex = Read-Host "Ñontinue y/n"
+$ex = Read-Host "Continue y/n"
 if ($ex -eq "n") {$exit = $true}
 else {
 
