@@ -1,3 +1,4 @@
+# async ping on list IP
 # For the script to work correctly, you need a file with device ip addresses.
 # The file with the ip addresses of the devices must be in the script folder and have the name gw.txt
 # When the script is run, the file is checked. \ Gw.txt, if it is missing, the script offers to create it.
@@ -40,7 +41,6 @@ $ex = Read-Host "Continue y/n"
 if ($ex -eq "n") {$exit = $true}
 else {
 
-#while (!($ch)) {}
 
 $NumCheck = GetData
 if ($NumCheck.Length -eq 0) {$NumCheck = 1} 
@@ -63,13 +63,11 @@ $Results | ? {$_.StatusCode -ne 0 } | % {$resultFail +="$( $_.Address)"}
 
 $tmpRes = @()
 
-#$resultFail.Length
 
 $count = 0
 if ($resultFail.Length -ne 0 ) {
 do {
 sleep 5
-#$count
 $job = Test-Connection ($resultFail) -AsJob -Count 1
 $Results = $job | Wait-Job | Receive-Job
 $resultFail = @()
