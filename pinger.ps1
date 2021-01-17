@@ -7,8 +7,8 @@
 # 10.1.1.2
 #
 # The script creates report files during operation:
-# Report of successful check. \ Pinger.csv
-# Report not available ip. \ FailPing.log
+# Report of successful check .\ Pinger.csv
+# Report not available ip .\ FailPing.log
 
 
 Set-Location $PSScriptRoot
@@ -19,7 +19,7 @@ while (!(Test-Path ".\gw.txt")) {
 Write-Host "Not list IP devices`n" -ForegroundColor Red ;
 $chip = Read-Host "Create list IP? y\n "
 if ($chip -eq "y") {
-         $form = "# Ôîðìàò ôàéëà gw.txt:
+         $form = "# Format file gw.txt:
          # 10.1.1.1
          # 10.1.1.2
          "
