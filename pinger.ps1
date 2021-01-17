@@ -45,7 +45,7 @@ else {
 $NumCheck = GetData
 if ($NumCheck.Length -eq 0) {$NumCheck = 1} 
 $ipRouters = @()
-$ipRouters = Get-Content "$($loc.Path)\gw.txt" | ? {$_ -notlike "*#*" -and $_ -match $ipv4} # path to list ip sanitizer
+$ipRouters = Get-Content "$($loc.Path)\gw.txt" | ? {$_ -notlike "*#*" -and $_ -match $ipv4} 
 
 $Results = @()
 $resultOk = @()
