@@ -1,13 +1,13 @@
-# Для корректной работы скрипта необходим файл с ip адресами устройств.
-# Файл с ip адресами устройств должен находится в папке скрипта и иметь имя gw.txt
-# При запуске скрипта происходит проверка файла .\gw.txt, если он отсутствует, скрипт предлагает его создать.
-# Формат файла gw.txt:
+# For the script to work correctly, you need a file with device ip addresses.
+# The file with the ip addresses of the devices must be in the script folder and have the name gw.txt
+# When the script is run, the file is checked. \ Gw.txt, if it is missing, the script offers to create it.
+# Gw.txt file format:
 # 10.1.1.1
 # 10.1.1.2
 #
-# Скрипт во время работы создает файлы отчетов:
-# Отчет успешной проверки .\pinger.csv
-# Отчет не доступных ip .\failPing.log
+# The script creates report files during operation:
+# Report of successful check. \ Pinger.csv
+# Report not available ip. \ FailPing.log
 
 
 Set-Location $PSScriptRoot
@@ -18,7 +18,7 @@ while (!(Test-Path ".\gw.txt")) {
 Write-Host "Not list IP devices`n" -ForegroundColor Red ;
 $chip = Read-Host "Create list IP? y\n "
 if ($chip -eq "y") {
-         $form = "# Формат файла gw.txt:
+         $form = "# Г”Г®Г°Г¬Г ГІ ГґГ Г©Г«Г  gw.txt:
          # 10.1.1.1
          # 10.1.1.2
          "
@@ -36,7 +36,7 @@ return $choose
 }
 do {
 $exit = $false
-$ex = Read-Host "Сontinue y/n"
+$ex = Read-Host "Г‘ontinue y/n"
 if ($ex -eq "n") {$exit = $true}
 else {
 
