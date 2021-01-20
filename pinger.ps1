@@ -1,7 +1,7 @@
 # async ping on list IP
 # For the script to work correctly, you need a file with device ip addresses.
 # The file with the ip addresses of the devices must be in the script folder and have the name gw.txt
-# When the script is run, the file is checked. \ Gw.txt, if it is missing, the script offers to create it.
+# When the script is run, the file is checked .\ Gw.txt, if it is missing, the script offers to create it.
 # Gw.txt file format:
 # 10.1.1.1
 # 10.1.1.2
