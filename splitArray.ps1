@@ -10,4 +10,6 @@ for ($i= ($j*$z - $z)+1 ; $i -le ($z*$j); $i++) { $arr[$i]}
 sleep 2
 }
 # remainder of the division
+if ($arr.Count % $z -ne 0) {
 for ($k = ($arr.Count - ($arr.count % $z - 1)); $k -le $arr.Count; $k++) {$arr[$k]}
+}
