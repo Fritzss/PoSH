@@ -19,10 +19,11 @@ while (!(Test-Path ".\gw.txt")) {
 Write-Host "Not list IP devices`n" -ForegroundColor Red ;
 $chip = Read-Host "Create list IP? y\n "
 if ($chip -eq "y") {
-         $form = "# Format file gw.txt:
-         # 10.1.1.1
-         # 10.1.1.2
-         "
+         $form = 
+"# Format file gw.txt:
+# 10.1.1.1
+# 10.1.1.2
+"
          $form | Out-File ".\gw.txt" -Encoding utf8
          notepad.exe "$($loc.Path)\gw.txt"
         }
@@ -80,7 +81,6 @@ if ((Compare-Object $tmpRes $resultFail).Length -ne 0) {$tmpRes = $resultFail; $
 }
 $rows = @()
 "Ok $($resultOk.Count), fail $( $ipRouters.Count - $resultOk.Count), all $($ipRouters.Count) `n"
-"Fail: $resultFail"
 (Get-Date).ToString("yy-MM-dd HH:mm") | Out-File ".\failPing.log" -Encoding utf8
 $resultFail | Out-File ".\failPing.log"
 $resultTime | % {  ; $row = '' | select IP, Time ; $row.IP = $_.Split(';')[0] ; $row.Time = $_.Split(';')[1]; $rows += $row}
