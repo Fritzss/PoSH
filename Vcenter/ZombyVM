@@ -58,7 +58,7 @@ return $arrays
 
 $rows = @();
 # VM for location folder Personal
-$VMs = Get-VM -Location "s.krylov" | ? {$_.powerstate -eq "poweredon" } 
+$VMs = Get-VM -Location "user" | ? {$_.powerstate -eq "poweredon" } 
 # All VM
 # $VMs = Get-VM | ? {$_.powerstate -eq "poweredon" } 
 $arrayVMs = arrSplit -array $VMs -div 2
