@@ -1,0 +1,105 @@
+#need module VMware https://blogs.vmware.com/PowerCLI/2017/04/powercli-install-process-powershell-gallery.html
+#$cred = Get-Credential 
+
+# login = user@domen
+
+$server="vcenter.example.net"
+function connectVC() {
+######ignore invalid SSL Certs##########
+add-type @"
+    using System.Net;
+    using System.Security.Cryptography.X509Certificates;
+    public class TrustAllCertsPolicy : ICertificatePolicy {
+        public bool CheckValidationResult(
+            ServicePoint srvPoint, X509Certificate certificate,
+            WebRequest request, int certificateProblem) {
+            return true;
+        }
+    }
+"@
+[System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
+
+while ($global:DefaultVIServer.Name.Length -eq 0){
+
+Connect-VIServer -Server $server -Credential $cred 
+sleep 5
+}
+}
+
+
+if ($cred.UserName.Length -eq 0){$cred = Get-Credential}
+connectVC -cred $cred
+
+$watch = [System.Diagnostics.Stopwatch]::StartNew()
+$watch.Start()
+
+$startstate = ((Get-Date).AddDays(-2)).ToString('dd\/MM\/yyyy')
+$endstat = ((Get-Date).AddDays(-1)).ToString('dd\/MM\/yyyy')
+
+$startstate
+$endstat
+
+function arrSplit($array, $div) {
+$arrays = @()
+$arr = $array
+$divider = $div
+Get-Variable arrsplit* | Remove-Variable
+for ($i=1 ; $i -le [math]::Truncate($arr.count/$divider); $i++) { 
+ New-Variable -Name "arrsplit$i" -Value @(for ($j= ($i*$divider - $divider) + 1 ; $j -le ($divider*$i); $j++) { if ($arr[$j-1] -ne $null) {$arr[$j-1]} ;  })} ;
+
+if ($arr.Count % $divider -ne 0) {
+New-Variable -Name "arrsplit$([math]::Truncate($arr.count/$divider)+1)" -value @(for ($k = ($arr.Count - ($arr.count % $divider -1)); $k -le $arr.Count; $k++) {$arr[$k]})
+}
+
+$arrays = Get-Variable arrsplit* #| Remove-Variable
+return $arrays
+}
+
+
+$rows = @();
+# VM for location folder Personal
+$VMs = Get-VM -Location "s.krylov" | ? {$_.powerstate -eq "poweredon" } 
+# All VM
+# $VMs = Get-VM | ? {$_.powerstate -eq "poweredon" } 
+$arrayVMs = arrSplit -array $VMs -div 2
+ 
+ function asyncRequest($arrayVMs, $day) {
+ Get-job | Remove-Job
+ $startstate = ((Get-Date).AddDays(-$day)).ToString('dd\/MM\/yyyy')
+ $endstat = (Get-Date).ToString('dd\/MM\/yyyy')
+ #$arrayVMs | % {$_}
+ foreach ($VM in $arrayVMs) {$VM = $VM.Name; $sid = ($global:DefaultVIServers).SessionId; $server = "vcenter.mt.ru"
+                        # $block = { Get-Stat -Entity $using:VM -Start $using:startstate -Finish $using:endstat -Stat "net.usage.average" -MaxSamples 20;} 
+                        # $max = 0;
+                        # $allst |% {if ($max -lt $_.Value ){$max = $_.Value}}
+                        # $row = '' | select VMName, MAX_kbit_usage_in_period
+                        #                   $row.VMName = $using:VM
+                        #                   $row.MAX_kbit_usage_in_period = $max
+                        #                   $rows += $row 
+                        #                   }
+                        #                   $rows}
+                          Start-Job -ScriptBlock {
+                          Connect-VIServer -Server $using:server -Session $using:sid ;
+                          Get-Stat -Entity $using:VM -Start $using:startstate -Finish $using:endstat -Stat "net.usage.average" -MaxSamples 20;
+                          } 
+                          }
+                                           
+$Jobs = Get-job | Wait-Job | Receive-Job
+Get-job | Remove-Job
+return $Jobs
+                                           }
+                                           #}
+                                   
+                                  
+#foreach ($splitarr in $arrayVMs) {$d = asyncRecuest -arrayVMs $splitarr.Value -day 1 ; $d}
+$t = asyncRequest -arrayVMs $VMs -day 1 
+
+$watch.Stop()
+$watch.Elapsed
+
+$rows | Out-GridView
+$rows | Export-csv -UseCulture -Encoding UTF8 -Path "C:\test\netstate.csv" -NoTypeInformation
+
+disconnect-viserver * -confirm:$false -Force
+ {if ($max -lt $_.Value ){$max = $_.Value}};
+                         
